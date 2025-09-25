@@ -1,243 +1,142 @@
-# 🧬 DrugTox-AI Enhanced Dashboard
+# 🧬 DrugTox-AI Dashboard
 
-## 📊 Features
+A comprehensive web-based platform for molecular toxicity prediction using machine learning models.
 
-### Modern Web Interface
-- **Professional Dashboard** - Inspired by modern marketplace interfaces
-- **Real-time Predictions** - Single molecule and batch processing
-- **Interactive Results** - Detailed toxicity analysis with confidence levels
-- **Responsive Design** - Works on desktop, tablet, and mobile devices
-- **Dark/Light Theme** - Automatic theme detection (future enhancement)
+## 📁 Project Structure
 
-### Core Functionality
-- **12 Toxicity Endpoints** - Nuclear Receptor and Stress Response pathways
-- **SMILES Input** - Standard molecular notation support
-- **Batch Processing** - Upload CSV files with multiple molecules
-- **Result History** - Track all predictions with filtering and search
-- **Export Options** - Download results as CSV files
-- **Real-time Stats** - System performance and usage metrics
-
-### Technical Features
-- **Flask Backend** - Python web framework with REST API
-- **Model Integration** - Connects to existing DrugTox-AI models
-- **Mock Mode** - Works without RDKit for testing
-- **File Upload** - Drag-and-drop interface for batch files
-- **Progress Tracking** - Real-time progress indicators
-- **Error Handling** - Comprehensive error messages and recovery
+```text
+drugtox-dashboard/
+├── backend/                    # Flask API Backend
+│   ├── app/
+│   │   ├── __init__.py        # Main Flask application
+│   │   ├── models/            # ML model integration
+│   │   ├── routes/            # API endpoints
+│   │   ├── services/          # Business logic
+│   │   └── utils/             # Utility functions
+│   ├── requirements.txt       # Python dependencies
+│   ├── tests/                 # Backend tests
+│   └── migrations/            # Database migrations (future)
+├── frontend/                  # Frontend Assets
+│   ├── src/
+│   │   ├── assets/            # CSS, JS, Images
+│   │   ├── components/        # Reusable components
+│   │   ├── pages/             # Page templates
+│   │   └── utils/             # Frontend utilities
+│   ├── public/                # Static files
+│   └── dist/                  # Build output (future)
+├── docs/                      # Documentation
+├── scripts/                   # Deployment scripts
+├── tests/                     # Integration tests
+├── README.md                  # This file
+└── requirements.txt           # Project dependencies
+```
 
 ## 🚀 Quick Start
 
-### Windows (Recommended)
+### Prerequisites
+
+- Python 3.8+
+- pip
+- Git
+
+### Installation
+
+1. **Clone and setup:**
+
+   ```bash
+   git clone <repository-url>
+   cd drugtox-dashboard
+   ```
+
+2. **Backend setup:**
+
+   ```bash
+   cd backend
+   python -m venv venv
+   # Windows:
+   venv\Scripts\activate
+   # Linux/Mac:
+   source venv/bin/activate
+
+   pip install -r requirements.txt
+   ```
+
+3. **Run the application:**
+
+   ```bash
+   python -m app
+   ```
+
+4. **Access dashboard:**
+   Open [http://localhost:5000](http://localhost:5000)
+
+## 🔧 Development
+
+### Backend Development
+
 ```bash
-# Double-click run_dashboard.bat
-# or from command line:
-run_dashboard.bat
+cd backend
+# Install in development mode
+pip install -e .
+# Run with auto-reload
+FLASK_ENV=development flask run
 ```
 
-### Manual Setup
+### Frontend Development
+
 ```bash
-# Create virtual environment
-python -m venv venv
-
-# Activate virtual environment
-# Windows:
-venv\Scripts\activate
-# Linux/Mac:
-source venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Start dashboard
-python app.py
+cd frontend
+# Install dependencies (future)
+npm install
+# Start development server (future)
+npm run dev
 ```
 
-### Access Dashboard
-Open your browser to: **http://localhost:5000**
+## 📊 Features
 
-## 📁 Dashboard Structure
+- **Molecular Toxicity Prediction** - 12 toxicity endpoints
+- **Batch Processing** - Handle multiple molecules
+- **Interactive Dashboard** - Modern web interface
+- **REST API** - Programmatic access
+- **Result Management** - History and export
+- **Responsive Design** - Mobile-friendly
 
-```
-dashboard/
-├── app.py                 # Main Flask application
-├── models.py             # Model integration and prediction logic
-├── requirements.txt      # Python dependencies
-├── run_dashboard.bat     # Windows launcher script
-├── templates/            # HTML templates
-│   ├── base.html        # Base template with navigation
-│   ├── dashboard.html   # Main dashboard page
-│   ├── predict.html     # Prediction interface
-│   └── results.html     # Results history
-├── static/              # Static assets
-│   ├── css/
-│   │   └── style.css    # Modern dashboard styling
-│   └── js/
-│       └── main.js      # Dashboard JavaScript
-└── uploads/             # Temporary file uploads (auto-created)
-```
+## 🔗 API Documentation
 
-## 🎯 Dashboard Pages
+See [API Documentation](./docs/api.md) for detailed endpoint information.
 
-### 1. Main Dashboard (`/`)
-- **System Statistics** - Total predictions, success rate, response time
-- **Quick Prediction** - Single molecule input form
-- **Recent Results** - Last 5 predictions with details
-- **System Status** - Model status and health indicators
-- **Endpoint Overview** - Available toxicity pathways
+## 🧪 Testing
 
-### 2. Prediction Interface (`/predict`)
-- **Single Prediction** - Individual molecule analysis
-- **Batch Processing** - CSV/TXT file upload (up to 100 molecules)
-- **Example Molecules** - Pre-loaded SMILES for testing
-- **Endpoint Information** - Details about each toxicity pathway
-- **Real-time Results** - Immediate prediction display
-
-### 3. Results History (`/results`)
-- **Prediction History** - All previous results with pagination
-- **Advanced Filtering** - Search by name, risk level, date range
-- **Detailed View** - Expandable prediction details
-- **Export Options** - Individual or bulk result downloads
-- **Result Management** - Copy SMILES, view summaries
-
-## 🔗 API Endpoints
-
-### Core Prediction API
 ```bash
-# Single molecule prediction
-POST /api/predict
-{
-    "name": "Aspirin",
-    "smiles": "CC(=O)OC1=CC=CC=C1C(=O)O"
-}
+# Backend tests
+cd backend
+python -m pytest
 
-# Batch file upload
-POST /api/batch_predict
-Form-data: file=molecules.csv
-
-# System statistics
-GET /api/stats
-
-# Endpoint statistics
-GET /api/endpoint_stats
-
-# Export results
-GET /api/export_results
+# Integration tests
+cd tests
+python -m pytest
 ```
 
-### API Response Format
-```json
-{
-    "success": true,
-    "result": {
-        "compound_name": "Aspirin",
-        "smiles": "CC(=O)OC1=CC=CC=C1C(=O)O",
-        "predictions": {
-            "NR-AR-LBD": {
-                "probability": 0.342,
-                "prediction": "Non-toxic",
-                "confidence": "Medium"
-            }
-        },
-        "timestamp": "2025-09-25T20:54:00",
-        "prediction_id": "abc123"
-    }
-}
-```
+## 🚀 Deployment
 
-## 🎨 UI Components
+See [Deployment Guide](./docs/deployment.md) for production deployment instructions.
 
-### Design System
-- **Color Scheme** - Professional green/blue palette
-- **Typography** - Inter font family for readability
-- **Icons** - Font Awesome icons throughout
-- **Animations** - Smooth transitions and loading states
-- **Responsive** - Mobile-first responsive design
+## 📝 License
 
-### Interactive Elements
-- **Stat Cards** - Animated counters with trend indicators
-- **Progress Bars** - Visual probability representations
-- **Loading States** - Spinners and progress indicators
-- **Notifications** - Toast messages for user feedback
-- **Modal Dialogs** - Filtering and confirmation dialogs
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🔧 Configuration
+## 🤝 Contributing
 
-### Environment Variables (Optional)
-```bash
-FLASK_ENV=development        # or production
-FLASK_DEBUG=True            # Enable debug mode
-MAX_CONTENT_LENGTH=16MB     # File upload limit
-UPLOAD_FOLDER=uploads       # Upload directory
-```
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests
+5. Submit a pull request
 
-### Model Configuration
-- Models loaded from `../models/optimized/` or `../models/baseline_final/`
-- Automatic fallback to mock predictions if models unavailable
-- RDKit optional for molecular feature extraction
+## 📞 Support
 
-## 📊 Dashboard Screenshots
+For questions and support, please open an issue on GitHub.
 
-The dashboard features a modern, professional interface with:
-- **Header Navigation** - Logo, menu items, system status
-- **Statistics Grid** - Key performance metrics
-- **Quick Actions** - Immediate prediction capability
-- **Recent Activity** - Latest prediction results
-- **Responsive Layout** - Adapts to all screen sizes
+---
 
-## 🎯 Use Cases
-
-### Research Applications
-- **Drug Discovery** - Screen new compounds for toxicity
-- **Lead Optimization** - Compare toxicity profiles
-- **Literature Validation** - Predict known compounds
-- **Batch Screening** - Process multiple molecules efficiently
-
-### Educational Use
-- **Teaching Tool** - Demonstrate QSAR modeling
-- **Student Projects** - Hands-on molecular toxicology
-- **Interactive Learning** - Real-time prediction examples
-
-### Production Use
-- **API Integration** - REST endpoints for external systems
-- **Batch Processing** - High-throughput screening
-- **Result Management** - Track and export predictions
-- **Performance Monitoring** - System statistics and health
-
-## 🚀 Deployment Options
-
-### Development Server
-```bash
-python app.py  # Flask development server
-```
-
-### Production Server
-```bash
-# Using Gunicorn (Linux/Mac)
-gunicorn -w 4 -b 0.0.0.0:5000 app:app
-
-# Using Waitress (Windows)
-waitress-serve --host=0.0.0.0 --port=5000 app:app
-```
-
-### Docker Deployment (Future)
-```dockerfile
-FROM python:3.9-slim
-COPY . /app
-WORKDIR /app
-RUN pip install -r requirements.txt
-EXPOSE 5000
-CMD ["python", "app.py"]
-```
-
-## 🎉 Success Metrics
-
-The dashboard provides a complete, production-ready web interface for DrugTox-AI with:
-- ✅ **Professional UI** - Modern, responsive design
-- ✅ **Full Functionality** - Single and batch predictions
-- ✅ **Model Integration** - Connects to existing trained models
-- ✅ **Result Management** - History, filtering, and export
-- ✅ **API Ready** - REST endpoints for integration
-- ✅ **Error Handling** - Robust error management
-- ✅ **Documentation** - Complete setup and usage guides
-
-Ready for immediate use in research, education, and production environments! 🧬
+Built with ❤️ for safer drug discovery

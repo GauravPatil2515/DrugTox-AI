@@ -20,10 +20,17 @@ import uuid
 from werkzeug.utils import secure_filename
 import logging
 
-# Add parent directory to path to import existing modules
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Add parent directories to path to import existing modules
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(os.path.dirname(current_dir))
+frontend_dir = os.path.join(project_root, 'frontend')
 
-app = Flask(__name__)
+sys.path.append(project_root)
+sys.path.append(frontend_dir)
+
+app = Flask(__name__,
+            template_folder=os.path.join(frontend_dir, 'src', 'templates'),
+            static_folder=os.path.join(frontend_dir, 'src', 'assets'))
 app.secret_key = 'drugtox_ai_secret_key_2025'
 
 # Configuration
@@ -58,11 +65,16 @@ class DrugToxPredictor:
         
     def load_models(self):
         """Load trained models"""
+        # Get the project root (drugtox-dashboard directory)
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        project_root = os.path.dirname(os.path.dirname(current_dir))
+        models_dir = os.path.join(project_root, '..', 'models')
+
         model_paths = [
-            "../models/optimized/best_optimized_models.pkl",
-            "../models/baseline_final/all_trained_models.pkl"
+            os.path.join(models_dir, "optimized", "best_optimized_models.pkl"),
+            os.path.join(models_dir, "baseline_final", "all_trained_models.pkl")
         ]
-        
+
         for path in model_paths:
             if os.path.exists(path):
                 try:
@@ -74,7 +86,7 @@ class DrugToxPredictor:
                 except Exception as e:
                     logging.error(f"Error loading models from {path}: {e}")
                     continue
-        
+
         # Mock models if none found
         self.endpoints = ['NR-AR-LBD', 'NR-AhR', 'SR-MMP', 'NR-ER-LBD', 'NR-AR']
         self.is_loaded = False

@@ -91,7 +91,7 @@
                         </span>
                     </div>
                     <div class="probability-bar">
-                        <div class="probability-fill" style="width: {{ (prediction.probability * 100)|round }}%"></div>
+                        <div class="probability-fill" data-width="{{ (prediction.probability * 100)|round }}"></div>
                     </div>
                     <div class="probability-text">
                         Probability: {{ "%.3f"|format(prediction.probability) }}
@@ -272,10 +272,22 @@ document.addEventListener('keydown', function(e) {
 });
 
 // Auto-refresh page every 30 seconds if there are recent predictions
-{% if results %}
-setTimeout(function() {
-    location.reload();
-}, 30000);
-{% endif %}
+if (document.querySelector('.result-item')) {
+    setTimeout(function() {
+        location.reload();
+    }, 30000);
+}
+</script>
+
+<script>
+// Set probability bar widths on page load
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.probability-fill').forEach(fill => {
+        const width = fill.getAttribute('data-width');
+        if (width) {
+            fill.style.width = width + '%';
+        }
+    });
+});
 </script>
 {% endblock %}
